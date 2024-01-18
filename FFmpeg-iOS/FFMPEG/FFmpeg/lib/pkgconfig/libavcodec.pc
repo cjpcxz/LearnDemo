@@ -1,0 +1,14 @@
+prefix=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64
+exec_prefix=${prefix}
+libdir=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64/lib
+includedir=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64/include
+
+Name: libavcodec
+Description: FFmpeg codec library
+Version: 59.18.100
+Requires: libswresample >= 4.3.100, libavutil >= 57.17.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavcodec -pthread -liconv -lm -lz -L/usr/local/Cellar/fdk-aac/2.0.2/lib -lfdk-aac -lx264 -pthread -lm
+Libs.private: 
+Cflags: -I${includedir}

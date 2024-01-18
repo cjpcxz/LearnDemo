@@ -1,0 +1,14 @@
+prefix=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64
+exec_prefix=${prefix}
+libdir=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64/lib
+includedir=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64/include
+
+Name: libavdevice
+Description: FFmpeg device handling library
+Version: 59.4.100
+Requires: libavformat >= 59.16.100, libavcodec >= 59.18.100, libswresample >= 4.3.100, libavutil >= 57.17.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavdevice -framework Foundation -lm -framework AVFoundation -framework CoreVideo -framework CoreMedia -pthread
+Libs.private: 
+Cflags: -I${includedir}

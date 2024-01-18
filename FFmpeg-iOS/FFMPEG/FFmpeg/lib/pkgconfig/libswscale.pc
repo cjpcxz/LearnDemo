@@ -1,0 +1,14 @@
+prefix=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64
+exec_prefix=${prefix}
+libdir=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64/lib
+includedir=/Users/chenjingpo/Downloads/ios-ffmpeg-build-script-ilongge-master/FFmpeg/thin-5.0/arm64/include
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 6.4.100
+Requires: libavutil >= 57.17.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lswscale -lm
+Libs.private: 
+Cflags: -I${includedir}

@@ -1,0 +1,6 @@
+framework module Pods_FFmpeg_iOS_FFmpeg_iOSUITests {
+  umbrella header "Pods-FFmpeg-iOS-FFmpeg-iOSUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
