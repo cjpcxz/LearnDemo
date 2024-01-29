@@ -183,11 +183,11 @@
 }
 
 - (MTLViewport)viewPortFrame {
-    int dx = 0,dy = 0,
-    w = self.mtkView.drawableSize.width,h = self.mtkView.drawableSize.height,
+    int dx = 0,dy = 0,scal = [UIScreen mainScreen].scale,
+    w = self.bounds.size.width,h = self.bounds.size.height,
     dw = self.viewportSize.x,dh = self.viewportSize.y;
     
-    // 计算目标尺寸
+    // 计算目标尺寸dw / dh > w / h
     if (dw * h > w * dh) {
         dh = w * dh / dw;
         dw = w;
@@ -197,7 +197,7 @@
     }
     dx = (w - dw) >> 1;
     dy = (h - dh) >> 1;
-    return (MTLViewport){dx, dy, dw, dh, 0, 10.0 };
+    return (MTLViewport){dx * scal, dy * scal, dw * scal, dh * scal, 0, 1.0 };
 }
 
 - (void)dealloc {

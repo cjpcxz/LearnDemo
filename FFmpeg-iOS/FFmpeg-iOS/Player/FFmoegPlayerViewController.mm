@@ -60,44 +60,52 @@
         make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop);
         make.height.mas_equalTo(400);
     }];
+    [self.progressSlider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.leading.mas_equalTo(self.metalview).inset(20);
+        make.top.mas_equalTo(self.metalview.mas_bottom).offset(50);
+        make.height.mas_equalTo(60);
+    }];
+    
+    [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.mas_equalTo(self.progressSlider.mas_trailing);
+        make.centerY.mas_equalTo(self.progressSlider.mas_centerY).offset(15);
+    }];
+    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.mas_equalTo(self.progressSlider.mas_trailing);
+        make.centerY.mas_equalTo(self.totalTimeLabel.mas_centerY).offset(-30);
+        make.height.mas_equalTo(self.totalTimeLabel);
+    }];
+    
     [self.playButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.mas_equalTo(self.metalview.mas_leading);
-        make.top.mas_equalTo(self.metalview.mas_bottom);
+        make.trailing.mas_equalTo(self.view.mas_centerX).offset(-50);
+        make.top.mas_equalTo(self.progressSlider.mas_bottom).offset(20);
         make.width.mas_equalTo(100);
         make.height.mas_equalTo(50);
     }];
     [self.stopButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.mas_equalTo(self.playButton.mas_trailing).offset(10);
+        make.leading.mas_equalTo(self.playButton.mas_trailing).offset(100);
         make.top.width.height.mas_equalTo(self.playButton);
+    }];
+    
+    [self.sounderSilder mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.stopButton.mas_bottom).offset(50);
+        make.centerX.mas_equalTo(0);
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(50);
     }];
     [self.soundLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(0);
-        make.width.mas_equalTo(50);
-        make.top.height.mas_equalTo(self.playButton);
+        make.leading.mas_equalTo(self.sounderSilder.mas_trailing).offset(20);
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(50);
+        make.centerY.mas_equalTo(self.sounderSilder);
     }];
-    [self.sounderSilder mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(self.soundLabel.mas_leading).offset(-10);
-        make.width.mas_equalTo(150);
-        make.top.height.mas_equalTo(self.playButton);
-    }];
+    
     [self.silenceButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(self.sounderSilder.mas_leading).offset(-10);
-        make.top.width.height.mas_equalTo(self.playButton);
+        make.top.mas_equalTo(self.sounderSilder.mas_bottom).offset(20);
+        make.centerX.mas_equalTo(self.sounderSilder);
+        make.width.height.mas_equalTo(self.playButton);
     }];
-    [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(self.silenceButton.mas_leading).offset(-10);
-        make.width.mas_equalTo(50);
-        make.top.height.mas_equalTo(self.playButton);
-    }];
-    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(self.totalTimeLabel.mas_leading).offset(-10);
-        make.top.width.height.mas_equalTo(self.totalTimeLabel);
-    }];
-    [self.progressSlider mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.mas_equalTo(self.timeLabel.mas_leading).offset(-10);
-        make.leading.mas_equalTo(self.stopButton.mas_trailing).offset(-10);
-        make.height.top.mas_equalTo(self.totalTimeLabel);
-    }];
+    
 }
 
 
@@ -110,21 +118,29 @@
     _player->setFilename(fileName);
     __weak typeof(self) weakSelf = self;
     _player->setPlayFailFunc([weakSelf](CFFmpegPlayer * player){
-        [weakSelf playFailFunc:player];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf playFailFunc:player];
+        });
     });
     _player->setInitFinishFunc([weakSelf](CFFmpegPlayer * player){
-        [weakSelf initFinishFunc:player];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf initFinishFunc:player];
+        });
     });
     _player->setTimeChangeFunc([weakSelf](CFFmpegPlayer * player){
-        [weakSelf timeChangeFunc:player];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf timeChangeFunc:player];
+        });
     });
     _player->setStateChangeFunc([weakSelf](CFFmpegPlayer * player){
-        [weakSelf stateChangeFunc:player];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf stateChangeFunc:player];
+        });
     });
     _player->setFrameDevodedFunc([weakSelf](CFFmpegPlayer * player,uint8_t * data,uint64_t len,int width,int height){
         [weakSelf frameDevodedFunc:player imgData:data len:len width:width height:height];
     });
-    
+//    _player->play();
 }
 
 - (void)initFinishFunc:(CFFmpegPlayer *)player {
@@ -142,7 +158,8 @@
 - (void)timeChangeFunc:(CFFmpegPlayer *)player {
     int seconds = player->getTime();
     [self updateLabel:self.timeLabel seconds:seconds];
-    self.progressSlider.value = seconds;
+    
+    [self.progressSlider setValue:seconds animated:NO];
 }
 
 - (void)stateChangeFunc:(CFFmpegPlayer *)player {
@@ -185,12 +202,12 @@
 }
 
 - (void)playAction:(UIButton *)button {
-    BOOL isPuse = button.isSelected;
-    button.selected = !isPuse;
-    if (isPuse) {
-        _player->play();
-    } else {
+    if (_player->getState() == CFFmpegPlayer::Playing) {
         _player->pluse();
+        button.selected = NO;
+    } else {
+        _player->play();
+        button.selected = YES;
     }
     
 }
@@ -206,11 +223,9 @@
 }
 
 - (void)progressValueChange:(UISlider *)slider {
-    [self updateLabel:self.timeLabel seconds:int(slider.value)];
-}
-
-- (void)progressValueClick:(UISlider *)slider {
+    NSLog(@"progressValueChange");
     _player->setTime(int(slider.value));
+    [self updateLabel:self.timeLabel seconds:int(slider.value)];
 }
 
 - (void)sounderValueChange:(UISlider *)slider {
@@ -230,7 +245,8 @@
 //MARK: getter & setter
 - (OpenGLMetalKitView *)metalview {
     if (!_metalview) {
-        _metalview = [[OpenGLMetalKitView alloc] initWithFrame:self.view.bounds];
+        _metalview = [[OpenGLMetalKitView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        _metalview.backgroundColor = [UIColor blackColor];
     }
     return _metalview;
 }
@@ -241,7 +257,7 @@
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         button.layer.cornerRadius = 20;
         button.layer.borderWidth = 1;
-        button.layer.backgroundColor = [UIColor blueColor].CGColor;
+        button.layer.borderColor = [UIColor blueColor].CGColor;
         [button setTitle:@"播放" forState:UIControlStateNormal];
         [button setTitle:@"暂停" forState:UIControlStateSelected];
         [button addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -258,7 +274,7 @@
         [button setTitle:@"停止" forState:UIControlStateNormal];
         button.layer.cornerRadius = 20;
         button.layer.borderWidth = 1;
-        button.layer.backgroundColor = [UIColor blueColor].CGColor;
+        button.layer.borderColor = [UIColor blueColor].CGColor;
         [button addTarget:self action:@selector(stopAction:) forControlEvents:UIControlEventTouchUpInside];
         _stopButton = button;
     }
@@ -273,7 +289,7 @@
         [button setTitle:@"已静音" forState:UIControlStateSelected];
         button.layer.cornerRadius = 20;
         button.layer.borderWidth = 1;
-        button.layer.backgroundColor = [UIColor blueColor].CGColor;
+        button.layer.borderColor = [UIColor blueColor].CGColor;
         [button addTarget:self action:@selector(silenceAction:) forControlEvents:UIControlEventTouchUpInside];
         _silenceButton = button;
     }
@@ -286,7 +302,6 @@
         slider.minimumValue = 0;
         _progressSlider = slider;
         [_progressSlider addTarget:self action:@selector(progressValueChange:) forControlEvents:UIControlEventValueChanged];
-        [_progressSlider addTarget:self action:@selector(progressValueClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _progressSlider;
 }
@@ -307,6 +322,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont systemFontOfSize:12];
         label.textColor = [UIColor blackColor];
+        label.text = @"timeLabel";
         _timeLabel = label;
     }
     return _timeLabel;
@@ -317,6 +333,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont systemFontOfSize:12];
         label.textColor = [UIColor blackColor];
+        label.text = @"totalTimeLabel";
         _totalTimeLabel = label;
     }
     return _totalTimeLabel;
