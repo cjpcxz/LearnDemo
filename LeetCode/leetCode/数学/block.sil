@@ -1,0 +1,82 @@
+sil_stage raw
+
+import Builtin
+import Swift
+import SwiftShims
+
+func makeIncrementer() -> () -> Int
+
+@_hasStorage @_hasInitialValue let increm: () -> Int { get }
+
+// increm
+sil_global hidden [let] @$s5block6incremSiycvp : $@callee_guaranteed () -> Int
+
+// main
+sil [ossa] @main : $@convention(c) (Int32, UnsafeMutablePointer<Optional<UnsafeMutablePointer<Int8>>>) -> Int32 {
+bb0(%0 : $Int32, %1 : $UnsafeMutablePointer<Optional<UnsafeMutablePointer<Int8>>>):
+  alloc_global @$s5block6incremSiycvp             // id: %2
+  %3 = global_addr @$s5block6incremSiycvp : $*@callee_guaranteed () -> Int // user: %6
+  // function_ref makeIncrementer()
+  %4 = function_ref @$s5block15makeIncrementerSiycyF : $@convention(thin) () -> @owned @callee_guaranteed () -> Int // user: %5
+  %5 = apply %4() : $@convention(thin) () -> @owned @callee_guaranteed () -> Int // user: %6
+  store %5 to [init] %3 : $*@callee_guaranteed () -> Int // id: %6
+  %7 = integer_literal $Builtin.Int32, 0          // user: %8
+  %8 = struct $Int32 (%7 : $Builtin.Int32)        // user: %9
+  return %8 : $Int32                              // id: %9
+} // end sil function 'main'
+
+// makeIncrementer()
+sil hidden [ossa] @$s5block15makeIncrementerSiycyF : $@convention(thin) () -> @owned @callee_guaranteed () -> Int {
+bb0:
+  %0 = alloc_box ${ var Int }, var, name "runningTotal" // users: %11, %8, %1
+  %1 = project_box %0 : ${ var Int }, 0           // users: %9, %6
+  %2 = integer_literal $Builtin.IntLiteral, 10    // user: %5
+  %3 = metatype $@thin Int.Type                   // user: %5
+  // function_ref Int.init(_builtinIntegerLiteral:)
+  %4 = function_ref @$sSi22_builtinIntegerLiteralSiBI_tcfC : $@convention(method) (Builtin.IntLiteral, @thin Int.Type) -> Int // user: %5
+  %5 = apply %4(%2, %3) : $@convention(method) (Builtin.IntLiteral, @thin Int.Type) -> Int // user: %6
+  store %5 to [trivial] %1 : $*Int                // id: %6
+  // function_ref incrementer #1 () in makeIncrementer()
+  %7 = function_ref @$s5block15makeIncrementerSiycyF11incrementerL_SiyF : $@convention(thin) (@guaranteed { var Int }) -> Int // user: %10
+  %8 = copy_value %0 : ${ var Int }               // user: %10
+  mark_function_escape %1 : $*Int                 // id: %9
+  %10 = partial_apply [callee_guaranteed] %7(%8) : $@convention(thin) (@guaranteed { var Int }) -> Int // user: %12
+  destroy_value %0 : ${ var Int }                 // id: %11
+  return %10 : $@callee_guaranteed () -> Int      // id: %12
+} // end sil function '$s5block15makeIncrementerSiycyF'
+
+// Int.init(_builtinIntegerLiteral:)
+sil [transparent] [serialized] @$sSi22_builtinIntegerLiteralSiBI_tcfC : $@convention(method) (Builtin.IntLiteral, @thin Int.Type) -> Int
+
+// incrementer #1 () in makeIncrementer()
+sil private [ossa] @$s5block15makeIncrementerSiycyF11incrementerL_SiyF : $@convention(thin) (@guaranteed { var Int }) -> Int {
+// %0 "runningTotal"                              // user: %1
+bb0(%0 : @closureCapture @guaranteed ${ var Int }):
+  %1 = project_box %0 : ${ var Int }, 0           // users: %12, %8, %2
+  debug_value %1 : $*Int, var, name "runningTotal", argno 1, expr op_deref // id: %2
+  %3 = metatype $@thin Int.Type                   // user: %10
+  %4 = integer_literal $Builtin.IntLiteral, 1     // user: %7
+  %5 = metatype $@thin Int.Type                   // user: %7
+  // function_ref Int.init(_builtinIntegerLiteral:)
+  %6 = function_ref @$sSi22_builtinIntegerLiteralSiBI_tcfC : $@convention(method) (Builtin.IntLiteral, @thin Int.Type) -> Int // user: %7
+  %7 = apply %6(%4, %5) : $@convention(method) (Builtin.IntLiteral, @thin Int.Type) -> Int // user: %10
+  %8 = begin_access [modify] [unknown] %1 : $*Int // users: %11, %10
+  // function_ref static Int.+= infix(_:_:)
+  %9 = function_ref @$sSi2peoiyySiz_SitFZ : $@convention(method) (@inout Int, Int, @thin Int.Type) -> () // user: %10
+  %10 = apply %9(%8, %7, %3) : $@convention(method) (@inout Int, Int, @thin Int.Type) -> ()
+  end_access %8 : $*Int                           // id: %11
+  %12 = begin_access [read] [unknown] %1 : $*Int  // users: %14, %13
+  %13 = load [trivial] %12 : $*Int                // user: %15
+  end_access %12 : $*Int                          // id: %14
+  return %13 : $Int                               // id: %15
+} // end sil function '$s5block15makeIncrementerSiycyF11incrementerL_SiyF'
+
+// static Int.+= infix(_:_:)
+sil [transparent] [serialized] @$sSi2peoiyySiz_SitFZ : $@convention(method) (@inout Int, Int, @thin Int.Type) -> ()
+
+
+
+// Mappings from '#fileID' to '#filePath':
+//   'block/block.swift' => 'block.swift'
+
+

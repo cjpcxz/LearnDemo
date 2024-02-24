@@ -1,0 +1,21 @@
+
+[{
+    "type" : "1",
+    "clusterKey" : "1_513_28",
+    "identifierKey" : "workMode",
+    "clusterConvertDict" : {
+        "1" : "0",
+        "3" : "1",
+        "8" : "2",
+        "7" : "3",
+    },
+} , {
+    "type" : "2",
+    "clusterKey" : "1_6_0",
+    "identifierKey" : "powerSwitch",
+    "writeStyle" : "1",
+    "mqttConvertDict" : {
+        "0" : "0",
+        "1" : "1",
+    }
+}]

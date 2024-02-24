@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "8DCFFF6F-E377-4264-A074-50AF4225699F"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7E3B5C4B-DAE8-49D6-9CB3-F6B5F3E5F53F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "leetCode/day_2.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "testdsss2()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5513FAEE-3014-4940-B713-68A19C8ED7D4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "leetCode/day_3.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "testdsss()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
+         <BreakpointContent
+            uuid = "DD67D5EB-EE13-4965-9B8D-AA45D6353780"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "*0x100034e9d">
+            <Locations>
+               <Location
+                  uuid = "DD67D5EB-EE13-4965-9B8D-AA45D6353780 - a3187336cdef2719"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "leetCode.Person.deinit"
+                  moduleName = "leetCode"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chenjingpo/Desktop/%E4%B8%80%E4%BA%9BDemo/LeranDemo/leetCode/leetCode/main.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "810"
+                  endingLineNumber = "810"
+                  offsetFromSymbolStart = "173">
+               </Location>
+               <Location
+                  uuid = "DD67D5EB-EE13-4965-9B8D-AA45D6353780 - f2f0a68038fef05e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "leetCode.Person.age.modify : Swift.Int with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "leetCode"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chenjingpo/Desktop/%E4%B8%80%E4%BA%9BDemo/LeranDemo/leetCode/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "45">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            uuid = "65E09DE2-C0E3-411C-AF76-F36D10A8CEA3"
+            shouldBeEnabled = "No"
+            nameForDebugger = "swift_unknownObjectWeakDestroy"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "swift_unknownObjectWeakDestroy"
+            moduleName = "">
+            <Actions>
+               <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
+                  <ActionContent
+                     consoleCommand = "">
+                  </ActionContent>
+               </BreakpointActionProxy>
+            </Actions>
+            <Locations>
+               <Location
+                  uuid = "65E09DE2-C0E3-411C-AF76-F36D10A8CEA3 - 1e44f65b02ed5c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "swift_unknownObjectWeakDestroy"
+                  moduleName = "libswiftCore.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "0">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
