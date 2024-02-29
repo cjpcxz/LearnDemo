@@ -1924,3 +1924,25 @@ func groupAnagrams(_ strs: [String]) -> [[String]] {
     }
     return res
 }
+
+// 128. 最长连续序列
+/**
+ 给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+
+ 请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
+ */
+func longestConsecutive(_ nums: [Int]) -> Int {
+    var numDic: [Int:Int] = [:],res = 0
+    for num in nums where numDic[num] == nil{ //去重
+        let l = numDic[num-1,default: 0]
+        let r = numDic[num+1,default: 0]
+        let curL = 1 + l + r
+        if curL > res {
+            res = curL
+        }
+        numDic[num] = 1
+        numDic[num - l] = curL
+        numDic[num + r] = curL
+    }
+    return res
+}

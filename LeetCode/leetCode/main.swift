@@ -813,3 +813,5 @@ node.right = TreeNode(9)
 
 
 print(closestNodes(node, [3]))
+print(longestConsecutive([100,4,200,1,3,2,2]))
+print(sorArr(arr: [2,3,1,41,5,1,3,1]))

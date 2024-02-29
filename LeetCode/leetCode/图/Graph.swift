@@ -1222,3 +1222,66 @@ func minReorder(_ n: Int, _ connections: [[Int]]) -> Int {
     }
     return res
 }
+
+
+/**
+ 1192. 查找集群内的关键连接
+ 力扣数据中心有 n 台服务器，分别按从 0 到 n-1 的方式进行了编号。它们之间以 服务器到服务器 的形式相互连接组成了一个内部集群，连接是无向的。用  connections 表示集群网络，connections[i] = [a, b] 表示服务器 a 和 b 之间形成连接。任何服务器都可以直接或者间接地通过网络到达任何其他服务器。
+
+ 关键连接 是在该集群中的重要连接，假如我们将它移除，便会导致某些服务器无法访问其他服务器。
+
+ 请你以任意顺序返回该集群内的所有 关键连接 。
+ */
+
+func criticalConnections(_ n: Int, _ connections: [[Int]]) -> [[Int]] {
+        var map = [Int:[Int]]()
+        for con in connections {
+            map[con[0],default: []] += [con[1]]
+            map[con[1],default: []] += [con[0]]
+        }
+        var ids = Array(repeating: -1, count: n)
+        var res = [[Int]]()
+        func dfs(nod:Int,id:Int,par:Int) -> Int {
+            ids[nod] = id
+            for nN in map[nod]! where nN != par  {
+                if ids[nN] == -1 {
+                    ids[nod] = min(ids[nod],dfs(nod: nN, id: id + 1, par: nod))
+                } else {
+                    ids[nod] = min(ids[nod],ids[nN])
+                }
+            }
+            if nod == id,nod != 0 {
+                res.append([nod,par])
+            }
+            return ids[nod]
+        }
+        return res;
+    }
+
+
+func sorArr(arr: [Int]) -> [Int] {
+        func sorArr(arr: inout [Int],low:Int,hig:Int) {
+            guard low < hig else {
+                return
+            }
+            let tag = arr[low]
+            var l = low - 1,r = hig + 1, i = low
+            while i < r {
+                if arr[i] < tag {
+                    l += 1
+                    (arr[l],arr[i]) = (arr[i],arr[l])
+                    i += 1
+                } else if arr[i] > tag {
+                    r -= 1
+                    (arr[r],arr[i]) = (arr[i],arr[r])
+                } else {
+                    i += 1
+                }
+            }
+            sorArr(arr: &arr,low:low,hig:l)
+            sorArr(arr: &arr,low:r,hig:hig)
+        }
+        var arr = arr;
+        sorArr(arr: &arr,low:0,hig:arr.count - 1)
+        return arr
+     }

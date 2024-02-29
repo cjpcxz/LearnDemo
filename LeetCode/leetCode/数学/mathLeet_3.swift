@@ -1710,3 +1710,35 @@ func quickSort(arr: inout [Int],l:Int,r:Int) {
     quickSort(arr: &arr, l: lb, r: r)
 }
 
+// 124. 二叉树中的最大路径和
+/**
+ 二叉树中的 路径 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
+
+ 路径和 是路径中各节点值的总和。
+
+ 给你一个二叉树的根节点 root ，返回其 最大路径和 。
+ */
+func maxPathSum(_ root: TreeNode?) -> Int {
+    class Node {
+        
+    }
+    var ds = [Node:Int]()
+    var maxSum = Int.min
+    func maxGain(_ node: TreeNode?) -> Int {
+        guard let node = node else {
+            return 0
+        }
+        
+        // 递归计算左右子节点的最大贡献值
+        // 只有在最大贡献值大于0才会选取
+        let leftGain = max(maxGain(node.left),0)
+        let rightGain = max(maxGain(node.right),0)
+        
+        let preNewPath = node.val + leftGain + rightGain
+        maxSum = max(maxSum,preNewPath)
+        
+        return node.val + max(leftGain,rightGain)
+    }
+    maxGain(root)
+    return maxSum
+}
